@@ -35,17 +35,17 @@ options(prompt = "R> ", width = 80)
 %----------------------------------------------------------------
 \begin{frame}[fragile]{Introduction}
 \begin{itemize}
-\item This is a brief example of Beamer slides with Sweave.
-\item We will include some plots, a table, and a reference.
-\item The document can be compiled in R via the following commands. These
-require the \verb#knitr# package to be installed.
+\item This is a brief example of Beamer slides with Sweave \citep{Sweave2022}.
+\item We will include some plots, a table, and references.
+\item The document can be compiled in R \citep{Rcore2022} via the following
+commands. These require the \verb#knitr# package to be installed.
 
 <<eval=FALSE>>=
 knitr::Sweave2knitr("slides.Rnw")
 knitr::knit2pdf("slides-knitr.Rnw")
 @
 
-If successful, the resulting PDF should be named \verb#slides-knitr.Rnw#.
+If successful, the resulting PDF should be named \verb#slides-knitr.pdf#.
 
 \item More information can be found at \url{https://yihui.org/knitr/demo/sweave/}.
 \end{itemize}
@@ -79,20 +79,12 @@ using \verb#booktabs#. Center the table and remove line separators.
 \footnotesize
 
 <<echo=FALSE, results=tex>>=
-x = mtcars %>% select(-vs, -am, -carb) %>% head(n = 20)
-kable(x, format = "latex", booktabs = TRUE, linesep = "") %>%
-	kable_styling(position = "center")
+mtcars %>% select(-vs, -am, -carb) %>%
+	head(n = 20) %>%
+	kable(format = "latex", booktabs = TRUE, linesep = "") %>%
+		kable_styling(position = "center")
 @
 
-\end{frame}
-
-%----------------------------------------------------------------
-\begin{frame}{Citations}
-\begin{itemize}
-\item The purpose of this slide is to ensure that bibtex functions.
-\item These slides make use of Sweave \citep{Sweave2022} and The R Project
-for Statistical Computing \citep{Rcore2022}. 
-\end{itemize}
 \end{frame}
 
 %----------------------------------------------------------------

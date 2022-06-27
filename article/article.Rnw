@@ -1,0 +1,74 @@
+\documentclass[10pt]{article}
+
+\usepackage{amsmath}
+\usepackage{booktabs}
+\usepackage{fullpage}
+\usepackage[round]{natbib}
+\usepackage{url}
+
+\title{Example of an Article with Sweave}
+\author{Andrew Raim}
+
+\begin{document}
+
+<<setup, include=FALSE, cache=FALSE, echo=FALSE>>=
+library(dplyr)
+library(knitr)
+library(kableExtra)
+
+opts_chunk$set(
+	fig.align = 'center',
+	fig.show = 'hold',
+	prompt = TRUE)
+options(prompt = "R> ", width = 80)
+@
+
+\maketitle
+
+This is a brief example of a Latex document with Sweave \citep{Sweave2022}. We
+will include some plots, a table, and a reference. The document can be
+compiled in R \citep{Rcore2022} via the following commands.
+
+<<eval=FALSE>>=
+knitr::Sweave2knitr("article.Rnw")
+knitr::knit2pdf("article-knitr.Rnw")
+@
+
+These require the \verb#knitr# package to be installed. If successful, the
+resulting PDF should be named \verb#article-knitr.pdf#. More information can be
+found at \url{https://yihui.org/knitr/demo/sweave/}.
+
+Let $X_i \sim \text{N}(0,1)$ for $i = 1, \ldots, 200$.
+
+<<>>=
+x = rnorm(200)
+head(x, n = 20)
+@
+
+A histogram and Q-Q plot are given in Figure~\ref{fig:rnorm}.
+Table~\ref{tab:mtcars} renders some rows of the \verb#mtcars# dataset as a
+Latex table using \verb#booktabs#. Center the table and remove line separators.
+
+\begin{figure}
+\caption{A figure with two plots.}
+\label{fig:rnorm}
+<<echo=FALSE, out.width="48%">>=
+hist(x)
+qqnorm(x)
+@
+\end{figure}
+
+<<results=tex>>=
+mtcars %>%
+	head(n = 20) %>%
+	kable(format = "latex", booktabs = TRUE, linesep = "",
+		label = "mtcars",
+		caption = "A few rows of the mtcars dataset.") %>%
+	kable_styling(position = "center")
+@
+
+\bibliographystyle{plainnat}
+\bibliography{references}
+
+\end{document}
+
