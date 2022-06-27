@@ -1,0 +1,105 @@
+\documentclass[9pt]{beamer}
+\mode <presentation>
+
+\usepackage{booktabs}
+\usepackage[round]{natbib}
+
+% A few tweaks to the default theme. Take away the navigation symbols and use
+% circles as bullets.
+\setbeamertemplate{itemize item}[circle]
+\setbeamertemplate{navigation symbols}{}
+
+\title[Example Sweave Slides]{\LARGE{Example of Slides with Sweave}}
+\author{Andrew Raim}
+
+\begin{document}
+
+<<setup, include=FALSE, cache=FALSE, echo=FALSE>>=
+library(dplyr)
+library(knitr)
+library(kableExtra)
+
+opts_chunk$set(
+	fig.align = 'center',
+	fig.show = 'hold',
+	size = 'footnotesize',
+	prompt = TRUE)
+options(prompt = "R> ", width = 80)
+@
+
+%----------------------------------------------------------------
+\begin{frame}[plain]
+\maketitle
+\end{frame}
+
+%----------------------------------------------------------------
+\begin{frame}[fragile]{Introduction}
+\begin{itemize}
+\item This is a brief example of Beamer slides with Sweave.
+\item We will include some plots, a table, and a reference.
+\item The document can be compiled in R via the following commands. These
+require the \verb#knitr# package to be installed.
+
+<<eval=FALSE>>=
+knitr::Sweave2knitr("slides.Rnw")
+knitr::knit2pdf("slides-knitr.Rnw")
+@
+
+If successful, the resulting PDF should be named \verb#slides-knitr.Rnw#.
+
+\item More information can be found at \url{https://yihui.org/knitr/demo/sweave/}.
+\end{itemize}
+\end{frame}
+
+%----------------------------------------------------------------
+\begin{frame}[fragile]{Plot}
+\begin{itemize}
+\item Let $X_i \sim \text{N}(0,1)$ for $i = 1, \ldots, 200$.
+
+<<>>=
+x = rnorm(200)
+head(x, n = 20)
+@
+
+\item Here is a histogram and a Q-Q plot.
+
+<<fig=TRUE, out.width="48%">>=
+hist(x)
+qqnorm(x)
+@
+
+\end{itemize}
+\end{frame}
+
+%----------------------------------------------------------------
+\begin{frame}[fragile]{Table}
+Render some rows and columns of the \verb#mtcars# dataset as a Latex table
+using \verb#booktabs#. Center the table and remove line separators.
+
+\footnotesize
+
+<<echo=FALSE, results=tex>>=
+x = mtcars %>% select(-vs, -am, -carb) %>% head(n = 20)
+kable(x, format = "latex", booktabs = TRUE, linesep = "") %>%
+	kable_styling(position = "center")
+@
+
+\end{frame}
+
+%----------------------------------------------------------------
+\begin{frame}{Citations}
+\begin{itemize}
+\item The purpose of this slide is to ensure that bibtex functions.
+\item These slides make use of Sweave \citep{Sweave2022} and The R Project
+for Statistical Computing \citep{Rcore2022}. 
+\end{itemize}
+\end{frame}
+
+%----------------------------------------------------------------
+\begin{frame}{References}
+\bibliographystyle{plainnat}
+\bibliography{references}
+\end{frame}
+
+\end{document}
+
